@@ -158,15 +158,19 @@ open class CameraViewController: UIViewController {
     }()
 	
 	private let allowsLibraryAccess: Bool
+
+    private let savesImageToLibrary: Bool
   
     public init(croppingParameters: CroppingParameters = CroppingParameters(),
                 allowsLibraryAccess: Bool = true,
+                savesImageToLibrary: Bool = true,
                 allowsSwapCameraOrientation: Bool = true,
                 allowVolumeButtonCapture: Bool = true,
                 completion: @escaping CameraViewCompletion) {
 
         self.croppingParameters = croppingParameters
         self.allowsLibraryAccess = allowsLibraryAccess
+        self.savesImageToLibrary = savesImageToLibrary
         self.allowVolumeButtonCapture = allowVolumeButtonCapture
         super.init(nibName: nil, bundle: nil)
         onCompletion = completion
@@ -519,7 +523,7 @@ open class CameraViewController: UIViewController {
         let spinner = showSpinner()
         cameraView.preview.isHidden = true
 
-		if allowsLibraryAccess {
+		if allowsLibraryAccess && savesImageToLibrary {
         _ = SingleImageSaver()
             .setImage(image)
             .onSuccess { [weak self] asset in
